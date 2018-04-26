@@ -8,11 +8,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/apex/log"
+	"github.com/claytoncasey01/log"
 )
 
 // Default handler outputting to stderr.
-var Default = New(os.Stderr)
+var Default = New(os.Stderr, log.InfoLevel)
 
 // start time.
 var start = time.Now()
@@ -49,12 +49,14 @@ var Strings = [...]string{
 type Handler struct {
 	mu     sync.Mutex
 	Writer io.Writer
+	Level  log.Level
 }
 
 // New handler.
-func New(w io.Writer) *Handler {
+func New(w io.Writer, l log.Level) *Handler {
 	return &Handler{
 		Writer: w,
+		Level:  l,
 	}
 }
 
@@ -67,14 +69,16 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	ts := time.Since(start) / time.Second
-	fmt.Fprintf(h.Writer, "\033[%dm%6s\033[0m[%04d] %-25s", color, level, ts, e.Message)
+	if e.Level == h.Level {
+		ts := time.Since(start) / time.Second
+		fmt.Fprintf(h.Writer, "\033[%dm%6s\033[0m[%04d] %-25s", color, level, ts, e.Message)
 
-	for _, name := range names {
-		fmt.Fprintf(h.Writer, " \033[%dm%s\033[0m=%v", color, name, e.Fields.Get(name))
+		for _, name := range names {
+			fmt.Fprintf(h.Writer, " \033[%dm%s\033[0m=%v", color, name, e.Fields.Get(name))
+		}
+
+		fmt.Fprintln(h.Writer)
 	}
-
-	fmt.Fprintln(h.Writer)
 
 	return nil
 }

@@ -6,10 +6,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/apex/log"
-	"github.com/apex/log/handlers/es"
-	"github.com/apex/log/handlers/multi"
-	"github.com/apex/log/handlers/text"
+	"github.com/claytoncasey01/log"
+	"github.com/claytoncasey01/log/handlers/es"
+	"github.com/claytoncasey01/log/handlers/multi"
+	"github.com/claytoncasey01/log/handlers/text"
 	"github.com/tj/go-elastic"
 )
 

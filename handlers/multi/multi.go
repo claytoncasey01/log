@@ -2,7 +2,7 @@
 package multi
 
 import (
-	"github.com/apex/log"
+	"github.com/claytoncasey01/log"
 )
 
 // Handler implementation.
