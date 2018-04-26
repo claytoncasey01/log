@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/apex/log"
-	"github.com/apex/log/handlers/json"
+	"github.com/claytoncasey01/log"
+	"github.com/claytoncasey01/log/handlers/json"
 )
 
 func init() {
@@ -20,7 +20,7 @@ func init() {
 func Test(t *testing.T) {
 	var buf bytes.Buffer
 
-	log.SetHandler(json.New(&buf))
+	log.SetHandler(json.New(&buf, log.InfoLevel))
 	log.WithField("user", "tj").WithField("id", "123").Info("hello")
 	log.Info("world")
 	log.Error("boom")

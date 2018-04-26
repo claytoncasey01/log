@@ -8,13 +8,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/apex/log"
+	"github.com/claytoncasey01/log"
 	"github.com/fatih/color"
 	colorable "github.com/mattn/go-colorable"
 )
 
 // Default handler outputting to stderr.
-var Default = New(os.Stderr)
+var Default = New(os.Stderr, log.InfoLevel)
 
 // start time.
 var start = time.Now()
@@ -44,21 +44,28 @@ type Handler struct {
 	mu      sync.Mutex
 	Writer  io.Writer
 	Padding int
+	Level   log.Level
 }
 
 // New handler.
-func New(w io.Writer) *Handler {
+func New(w io.Writer, l log.Level) *Handler {
 	if f, ok := w.(*os.File); ok {
 		return &Handler{
 			Writer:  colorable.NewColorable(f),
 			Padding: 3,
+			Level:   l,
 		}
 	}
 
 	return &Handler{
 		Writer:  w,
 		Padding: 3,
+		Level:   l,
 	}
+}
+
+func (h *Handler) SetLevel(l log.Level) {
+	h.Level = l
 }
 
 // HandleLog implements log.Handler.
@@ -70,16 +77,18 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	color.Fprintf(h.Writer, "%s %-25s", bold.Sprintf("%*s", h.Padding+1, level), e.Message)
+	if e.Level == h.Level {
+		color.Fprintf(h.Writer, "%s %-25s", bold.Sprintf("%*s", h.Padding+1, level), e.Message)
 
-	for _, name := range names {
-		if name == "source" {
-			continue
+		for _, name := range names {
+			if name == "source" {
+				continue
+			}
+			fmt.Fprintf(h.Writer, " %s=%s", color.Sprint(name), e.Fields.Get(name))
 		}
-		fmt.Fprintf(h.Writer, " %s=%s", color.Sprint(name), e.Fields.Get(name))
-	}
 
-	fmt.Fprintln(h.Writer)
+		fmt.Fprintln(h.Writer)
+	}
 
 	return nil
 }

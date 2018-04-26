@@ -7,22 +7,24 @@ import (
 	"os"
 	"sync"
 
-	"github.com/apex/log"
+	"github.com/claytoncasey01/log"
 )
 
 // Default handler outputting to stderr.
-var Default = New(os.Stderr)
+var Default = New(os.Stderr, log.InfoLevel)
 
 // Handler implementation.
 type Handler struct {
 	*j.Encoder
-	mu sync.Mutex
+	mu    sync.Mutex
+	Level log.Level
 }
 
 // New handler.
-func New(w io.Writer) *Handler {
+func New(w io.Writer, l log.Level) *Handler {
 	return &Handler{
 		Encoder: j.NewEncoder(w),
+		Level:   l,
 	}
 }
 
@@ -30,5 +32,10 @@ func New(w io.Writer) *Handler {
 func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
-	return h.Encoder.Encode(e)
+
+	if e.Level == h.Level {
+		return h.Encoder.Encode(e)
+	}
+
+	return nil
 }
