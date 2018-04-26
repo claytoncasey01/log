@@ -64,10 +64,6 @@ func New(w io.Writer, l log.Level) *Handler {
 	}
 }
 
-func (h *Handler) SetLevel(l log.Level) {
-	h.Level = l
-}
-
 // HandleLog implements log.Handler.
 func (h *Handler) HandleLog(e *log.Entry) error {
 	color := Colors[e.Level]
