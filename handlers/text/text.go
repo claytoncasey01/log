@@ -69,7 +69,7 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	if e.Level == h.Level {
+	if e.Level >= h.Level {
 		ts := time.Since(start) / time.Second
 		fmt.Fprintf(h.Writer, "\033[%dm%6s\033[0m[%04d] %-25s", color, level, ts, e.Message)
 

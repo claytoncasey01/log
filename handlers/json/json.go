@@ -33,7 +33,7 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	if e.Level == h.Level {
+	if e.Level >= h.Level {
 		return h.Encoder.Encode(e)
 	}
 

@@ -73,7 +73,7 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	if e.Level == h.Level {
+	if e.Level >= h.Level {
 		color.Fprintf(h.Writer, "%s %-25s", bold.Sprintf("%*s", h.Padding+1, level), e.Message)
 
 		for _, name := range names {
