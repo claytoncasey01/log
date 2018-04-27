@@ -52,13 +52,13 @@ func (f HandlerFunc) HandleLog(e *Entry) error {
 //
 // It is left up to Handlers to implement thread-safety.
 type Handler interface {
+	GetLevel() Level
 	HandleLog(*Entry) error
 }
 
 // Logger represents a logger with configurable Level and Handler.
 type Logger struct {
 	Handler Handler
-	Level   Level
 }
 
 // WithFields returns a new entry with `fields` set.
@@ -139,7 +139,7 @@ func (l *Logger) Trace(msg string) *Entry {
 // to bypass the overhead in Entry methods when the level is not
 // met.
 func (l *Logger) log(level Level, e *Entry, msg string) {
-	if level < l.Level {
+	if level < l.Handler.GetLevel() {
 		return
 	}
 

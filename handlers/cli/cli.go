@@ -64,6 +64,11 @@ func New(w io.Writer, l log.Level) *Handler {
 	}
 }
 
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
+}
+
 // HandleLog implements log.Handler.
 func (h *Handler) HandleLog(e *log.Entry) error {
 	color := Colors[e.Level]
@@ -73,18 +78,16 @@ func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	if e.Level >= h.Level {
-		color.Fprintf(h.Writer, "%s %-25s", bold.Sprintf("%*s", h.Padding+1, level), e.Message)
+	color.Fprintf(h.Writer, "%s %-25s", bold.Sprintf("%*s", h.Padding+1, level), e.Message)
 
-		for _, name := range names {
-			if name == "source" {
-				continue
-			}
-			fmt.Fprintf(h.Writer, " %s=%s", color.Sprint(name), e.Fields.Get(name))
+	for _, name := range names {
+		if name == "source" {
+			continue
 		}
-
-		fmt.Fprintln(h.Writer)
+		fmt.Fprintf(h.Writer, " %s=%s", color.Sprint(name), e.Fields.Get(name))
 	}
+
+	fmt.Fprintln(h.Writer)
 
 	return nil
 }

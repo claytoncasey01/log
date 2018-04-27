@@ -9,8 +9,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/claytoncasey01/log"
 	"github.com/aybabtme/rgbterm"
+	"github.com/claytoncasey01/log"
 	"github.com/tj/go-spin"
 )
 
@@ -68,7 +68,7 @@ var Strings = [...]string{
 }
 
 // Default handler.
-var Default = New(os.Stderr)
+var Default = New(os.Stderr, log.InfoLevel)
 
 // Handler implementation.
 type Handler struct {
@@ -78,16 +78,18 @@ type Handler struct {
 	prev    *log.Entry
 	done    chan struct{}
 	w       io.Writer
+	Level   log.Level
 }
 
 // New handler.
-func New(w io.Writer) *Handler {
+func New(w io.Writer, l log.Level) *Handler {
 	h := &Handler{
 		entries: make(chan *log.Entry),
 		done:    make(chan struct{}),
 		start:   time.Now(),
 		spin:    spin.New(),
 		w:       w,
+		Level:   l,
 	}
 
 	go h.loop()
@@ -161,6 +163,11 @@ func (h *Handler) render(e *log.Entry, done bool) {
 		fmt.Fprintf(h.w, "\n")
 		h.start = time.Now()
 	}
+}
+
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
 }
 
 // HandleLog implements log.Handler.

@@ -28,6 +28,11 @@ func New(w io.Writer, l log.Level) *Handler {
 	}
 }
 
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
+}
+
 // HandleLog implements log.Handler.
 func (h *Handler) HandleLog(e *log.Entry) error {
 	h.mu.Lock()
