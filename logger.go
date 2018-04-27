@@ -53,6 +53,7 @@ func (f HandlerFunc) HandleLog(e *Entry) error {
 // It is left up to Handlers to implement thread-safety.
 type Handler interface {
 	GetLevel() Level
+	SetLevel(Level)
 	HandleLog(*Entry) error
 }
 

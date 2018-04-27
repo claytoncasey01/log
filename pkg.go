@@ -2,8 +2,7 @@ package log
 
 // singletons ftw?
 var Log Interface = &Logger{
-	Handler: HandlerFunc(handleStdLog),
-	Level:   InfoLevel,
+	Handler: HandlerFunc(handleStdLog, InfoLevel),
 }
 
 // SetHandler sets the handler. This is not thread-safe.
@@ -11,20 +10,6 @@ var Log Interface = &Logger{
 func SetHandler(h Handler) {
 	if logger, ok := Log.(*Logger); ok {
 		logger.Handler = h
-	}
-}
-
-// SetLevel sets the log level. This is not thread-safe.
-func SetLevel(l Level) {
-	if logger, ok := Log.(*Logger); ok {
-		logger.Level = l
-	}
-}
-
-// SetLevelFromString sets the log level from a string, panicing when invalid. This is not thread-safe.
-func SetLevelFromString(s string) {
-	if logger, ok := Log.(*Logger); ok {
-		logger.Level = MustParseLevel(s)
 	}
 }
 

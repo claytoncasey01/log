@@ -15,15 +15,32 @@ var Default = New(os.Stderr)
 
 // Handler implementation.
 type Handler struct {
-	mu  sync.Mutex
-	enc *logfmt.Encoder
+	mu    sync.Mutex
+	enc   *logfmt.Encoder
+	Level log.Level
 }
 
 // New handler.
-func New(w io.Writer) *Handler {
+func New(w io.Writer, l log.Level) *Handler {
 	return &Handler{
 		enc: logfmt.NewEncoder(w),
+		Level: l
 	}
+}
+
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
+}
+
+// SetLevel sets the handler log level.
+func (h *Handler) SetLevel(l log.Level) {
+	h.Level = l
+}
+
+// SetLevelFromString sets the handler log level from a string.
+func (h *Handler) SetLevelFromString(s string) {
+	h.Level = log.MustParseLevel(s)
 }
 
 // HandleLog implements log.Handler.

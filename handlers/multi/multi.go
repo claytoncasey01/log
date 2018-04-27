@@ -17,6 +17,14 @@ func New(h ...log.Handler) *Handler {
 	}
 }
 
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return nil
+}
+
+// SetLevel sets the handler log level.
+func (h *Handler) SetLevel(l log.Level) {}
+
 // HandleLog implements log.Handler.
 func (h *Handler) HandleLog(e *log.Entry) error {
 	for _, handler := range h.Handlers {

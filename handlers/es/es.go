@@ -47,14 +47,31 @@ type Handler struct {
 
 	mu    sync.Mutex
 	batch *batch.Batch
+	Level log.Level
 }
 
 // New handler with BufferSize
-func New(config *Config) *Handler {
+func New(config *Config, l log.Level) *Handler {
 	config.defaults()
 	return &Handler{
 		Config: config,
+		Level:  l,
 	}
+}
+
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
+}
+
+// SetLevel sets the handler log level.
+func (h *Handler) SetLevel(l log.Level) {
+	h.Level = l
+}
+
+// SetLevelFromString sets the handler log level from a string.
+func (h *Handler) SetLevelFromString(s string) {
+	h.Level = log.MustParseLevel(s)
 }
 
 // HandleLog implements log.Handler.

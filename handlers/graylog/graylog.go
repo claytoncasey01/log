@@ -2,20 +2,21 @@
 package graylog
 
 import (
-	"github.com/claytoncasey01/log"
 	"github.com/aphistic/golf"
+	"github.com/claytoncasey01/log"
 )
 
 // Handler implementation.
 type Handler struct {
 	logger *golf.Logger
 	client *golf.Client
+	Level  log.Level
 }
 
 // New handler.
 // Connection string should be in format "udp://<ip_address>:<port>".
 // Server should have GELF input enabled on that port.
-func New(url string) (*Handler, error) {
+func New(url string, l log.Level) (*Handler, error) {
 	c, err := golf.NewClient()
 	if err != nil {
 		return nil, err
@@ -34,7 +35,23 @@ func New(url string) (*Handler, error) {
 	return &Handler{
 		logger: l,
 		client: c,
+		Level:  l,
 	}, nil
+}
+
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
+}
+
+// SetLevel sets the handler log level.
+func (h *Handler) SetLevel(l log.Level) {
+	h.Level = l
+}
+
+// SetLevelFromString sets the handler log level from a string.
+func (h *Handler) SetLevelFromString(s string) {
+	h.Level = log.MustParseLevel(s)
 }
 
 // HandleLog implements log.Handler.

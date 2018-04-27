@@ -170,6 +170,16 @@ func (h *Handler) GetLevel() log.Level {
 	return h.Level
 }
 
+// SetLevel sets the handler log level.
+func (h *Handler) SetLevel(l log.Level) {
+	h.Level = l
+}
+
+// SetLevelFromString sets the handler log level from a string.
+func (h *Handler) SetLevelFromString(s string) {
+	h.Level = log.MustParseLevel(s)
+}
+
 // HandleLog implements log.Handler.
 func (h *Handler) HandleLog(e *log.Entry) error {
 	h.entries <- e

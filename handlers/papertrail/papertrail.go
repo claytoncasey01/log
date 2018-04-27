@@ -32,12 +32,13 @@ type Config struct {
 type Handler struct {
 	*Config
 
-	mu   sync.Mutex
-	conn net.Conn
+	mu    sync.Mutex
+	conn  net.Conn
+	Level log.Level
 }
 
 // New handler.
-func New(config *Config) *Handler {
+func New(config *Config, l log.Level) *Handler {
 	conn, err := net.Dial("udp", fmt.Sprintf("%s.papertrailapp.com:%d", config.Host, config.Port))
 	if err != nil {
 		panic(err)
@@ -46,7 +47,23 @@ func New(config *Config) *Handler {
 	return &Handler{
 		Config: config,
 		conn:   conn,
+		Level:  l,
 	}
+}
+
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
+}
+
+// SetLevel sets the handler log level.
+func (h *Handler) SetLevel(l log.Level) {
+	h.Level = l
+}
+
+// SetLevelFromString sets the handler log level from a string.
+func (h *Handler) SetLevelFromString(s string) {
+	h.Level = log.MustParseLevel(s)
 }
 
 // HandleLog implements log.Handler.

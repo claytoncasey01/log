@@ -12,11 +12,27 @@ import (
 type Handler struct {
 	mu      sync.Mutex
 	Entries []*log.Entry
+	Level   log.Level
 }
 
 // New handler.
 func New() *Handler {
 	return &Handler{}
+}
+
+// GetLevel returns the log level for the given Handler
+func (h *Handler) GetLevel() log.Level {
+	return h.Level
+}
+
+// SetLevel sets the handler log level.
+func (h *Handler) SetLevel(l log.Level) {
+	h.Level = l
+}
+
+// SetLevelFromString sets the handler log level from a string.
+func (h *Handler) SetLevelFromString(s string) {
+	h.Level = log.MustParseLevel(s)
 }
 
 // HandleLog implements log.Handler.
