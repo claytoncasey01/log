@@ -140,7 +140,7 @@ func (l *Logger) Trace(msg string) *Entry {
 // to bypass the overhead in Entry methods when the level is not
 // met.
 func (l *Logger) log(level Level, e *Entry, msg string) {
-	if level < l.Handler.GetLevel() {
+	if level < l.Handler.GetLevel() || l.Handler.GetLevel() == nil {
 		return
 	}
 
