@@ -53,7 +53,6 @@ func (f HandlerFunc) HandleLog(e *Entry) error {
 // It is left up to Handlers to implement thread-safety.
 type Handler interface {
 	GetLevel() Level
-	SetLevel(Level)
 	HandleLog(*Entry) error
 }
 
@@ -140,7 +139,7 @@ func (l *Logger) Trace(msg string) *Entry {
 // to bypass the overhead in Entry methods when the level is not
 // met.
 func (l *Logger) log(level Level, e *Entry, msg string) {
-	if level < l.Handler.GetLevel() || l.Handler.GetLevel() == nil {
+	if level < l.Handler.GetLevel() {
 		return
 	}
 
