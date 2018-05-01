@@ -10,6 +10,10 @@ import (
 // TODO(casey): Should handle the default case, we now need a GetLevel function
 // to be considered a handler.
 
+type defaultHandler struct {
+	Level: Level
+}
+
 // field used for sorting.
 type field struct {
 	Name  string
@@ -23,12 +27,18 @@ func (a byName) Len() int           { return len(a) }
 func (a byName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a byName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
-func getLevel() Level {
+func NewDefaultHandler() *DefaultHandler {
+	return &defaultHandler{
+		Level: InfoLevel
+	}
+}
+
+func (h *defaultHandler) GetLevel() Level {
 	return InfoLevel
 }
 
 // handleStdLog outputs to the stlib log.
-func handleStdLog(e *Entry) error {
+func (h *defaultHandler) HandleLog(e *Entry) error {
 	level := levelNames[e.Level]
 
 	var fields []field
