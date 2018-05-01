@@ -11,7 +11,7 @@ import (
 // to be considered a handler.
 
 type defaultHandler struct {
-	Level: Level
+	Level Level
 }
 
 // field used for sorting.
