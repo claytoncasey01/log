@@ -16,7 +16,6 @@ func TestLogger_printf(t *testing.T) {
 
 	l := &log.Logger{
 		Handler: h,
-		Level:   log.InfoLevel,
 	}
 
 	l.Infof("logged in %s", "Tobi")
@@ -31,7 +30,6 @@ func TestLogger_levels(t *testing.T) {
 
 	l := &log.Logger{
 		Handler: h,
-		Level:   log.InfoLevel,
 	}
 
 	l.Debug("uploading")
@@ -49,7 +47,6 @@ func TestLogger_WithFields(t *testing.T) {
 
 	l := &log.Logger{
 		Handler: h,
-		Level:   log.InfoLevel,
 	}
 
 	ctx := l.WithFields(log.Fields{"file": "sloth.png"})
@@ -69,7 +66,6 @@ func TestLogger_WithField(t *testing.T) {
 
 	l := &log.Logger{
 		Handler: h,
-		Level:   log.InfoLevel,
 	}
 
 	ctx := l.WithField("file", "sloth.png").WithField("user", "Tobi")
@@ -89,7 +85,6 @@ func TestLogger_Trace_info(t *testing.T) {
 
 	l := &log.Logger{
 		Handler: h,
-		Level:   log.InfoLevel,
 	}
 
 	func() (err error) {
@@ -120,7 +115,6 @@ func TestLogger_Trace_error(t *testing.T) {
 
 	l := &log.Logger{
 		Handler: h,
-		Level:   log.InfoLevel,
 	}
 
 	func() (err error) {
@@ -152,7 +146,6 @@ func TestLogger_Trace_nil(t *testing.T) {
 
 	l := &log.Logger{
 		Handler: h,
-		Level:   log.InfoLevel,
 	}
 
 	func() {
@@ -177,28 +170,9 @@ func TestLogger_Trace_nil(t *testing.T) {
 	}
 }
 
-func TestLogger_HandlerFunc(t *testing.T) {
-	h := memory.New()
-	f := func(e *log.Entry) error {
-		return h.HandleLog(e)
-	}
-
-	l := &log.Logger{
-		Handler: log.HandlerFunc(f),
-		Level:   log.InfoLevel,
-	}
-
-	l.Infof("logged in %s", "Tobi")
-
-	e := h.Entries[0]
-	assert.Equal(t, e.Message, "logged in Tobi")
-	assert.Equal(t, e.Level, log.InfoLevel)
-}
-
 func BenchmarkLogger_small(b *testing.B) {
 	l := &log.Logger{
 		Handler: discard.New(),
-		Level:   log.InfoLevel,
 	}
 
 	for i := 0; i < b.N; i++ {
@@ -209,7 +183,6 @@ func BenchmarkLogger_small(b *testing.B) {
 func BenchmarkLogger_medium(b *testing.B) {
 	l := &log.Logger{
 		Handler: discard.New(),
-		Level:   log.InfoLevel,
 	}
 
 	for i := 0; i < b.N; i++ {
@@ -224,7 +197,6 @@ func BenchmarkLogger_medium(b *testing.B) {
 func BenchmarkLogger_large(b *testing.B) {
 	l := &log.Logger{
 		Handler: discard.New(),
-		Level:   log.InfoLevel,
 	}
 
 	err := fmt.Errorf("boom")
@@ -236,13 +208,13 @@ func BenchmarkLogger_large(b *testing.B) {
 			"size": 1 << 20,
 		}).
 			WithFields(log.Fields{
-			"some":     "more",
-			"data":     "here",
-			"whatever": "blah blah",
-			"more":     "stuff",
-			"context":  "such useful",
-			"much":     "fun",
-		}).
+				"some":     "more",
+				"data":     "here",
+				"whatever": "blah blah",
+				"more":     "stuff",
+				"context":  "such useful",
+				"much":     "fun",
+			}).
 			WithError(err).Error("upload failed")
 	}
 }
