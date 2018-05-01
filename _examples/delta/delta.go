@@ -9,8 +9,11 @@ import (
 )
 
 func main() {
-	log.SetHandler(delta.Default)
-	log.SetLevel(log.DebugLevel)
+
+	handler := delta.Default
+	handler.SetLevel(log.DebugLevel)
+
+	log.SetHandler(handler)
 
 	ctx := log.WithFields(log.Fields{
 		"file": "something.png",
