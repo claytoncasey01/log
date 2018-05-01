@@ -20,7 +20,7 @@ func init() {
 func Test(t *testing.T) {
 	var buf bytes.Buffer
 
-	log.SetHandler(text.New(&buf, log.InfoLevel))
+	log.SetHandler(text.New(&buf))
 	log.WithField("user", "tj").WithField("id", "123").Info("hello")
 	log.WithField("user", "tj").Info("world")
 	log.WithField("user", "tj").Error("boom")

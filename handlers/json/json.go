@@ -11,7 +11,7 @@ import (
 )
 
 // Default handler outputting to stderr.
-var Default = New(os.Stderr, log.InfoLevel)
+var Default = New(os.Stderr)
 
 // Handler implementation.
 type Handler struct {
@@ -24,7 +24,7 @@ type Handler struct {
 func New(w io.Writer, l log.Level) *Handler {
 	return &Handler{
 		Encoder: j.NewEncoder(w),
-		Level:   l,
+		Level:   log.InfoLevel,
 	}
 }
 

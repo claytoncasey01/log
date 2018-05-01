@@ -68,7 +68,7 @@ var Strings = [...]string{
 }
 
 // Default handler.
-var Default = New(os.Stderr, log.InfoLevel)
+var Default = New(os.Stderr)
 
 // Handler implementation.
 type Handler struct {
@@ -82,14 +82,14 @@ type Handler struct {
 }
 
 // New handler.
-func New(w io.Writer, l log.Level) *Handler {
+func New(w io.Writer) *Handler {
 	h := &Handler{
 		entries: make(chan *log.Entry),
 		done:    make(chan struct{}),
 		start:   time.Now(),
 		spin:    spin.New(),
 		w:       w,
-		Level:   l,
+		Level:   log.InfoLevel,
 	}
 
 	go h.loop()

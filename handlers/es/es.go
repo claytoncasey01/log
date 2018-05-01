@@ -51,11 +51,11 @@ type Handler struct {
 }
 
 // New handler with BufferSize
-func New(config *Config, l log.Level) *Handler {
+func New(config *Config) *Handler {
 	config.defaults()
 	return &Handler{
 		Config: config,
-		Level:  l,
+		Level:  log.InfoLevel,
 	}
 }
 

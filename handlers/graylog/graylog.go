@@ -16,7 +16,7 @@ type Handler struct {
 // New handler.
 // Connection string should be in format "udp://<ip_address>:<port>".
 // Server should have GELF input enabled on that port.
-func New(url string, l log.Level) (*Handler, error) {
+func New(url string) (*Handler, error) {
 	c, err := golf.NewClient()
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func New(url string, l log.Level) (*Handler, error) {
 	return &Handler{
 		logger: l,
 		client: c,
-		Level:  l,
+		Level:  log.InfoLevel,
 	}, nil
 }
 

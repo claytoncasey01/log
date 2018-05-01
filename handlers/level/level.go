@@ -10,9 +10,9 @@ type Handler struct {
 }
 
 // New handler.
-func New(h log.Handler, level log.Level) *Handler {
+func New(h log.Handler) *Handler {
 	return &Handler{
-		Level:   level,
+		Level:   log.InfoLevel,
 		Handler: h,
 	}
 }

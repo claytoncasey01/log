@@ -12,7 +12,7 @@ import (
 )
 
 // Default handler outputting to stderr.
-var Default = New(os.Stderr, log.InfoLevel)
+var Default = New(os.Stderr)
 
 // start time.
 var start = time.Now()
@@ -53,10 +53,10 @@ type Handler struct {
 }
 
 // New handler.
-func New(w io.Writer, l log.Level) *Handler {
+func New(w io.Writer) *Handler {
 	return &Handler{
 		Writer: w,
-		Level:  l,
+		Level:  log.InfoLevel,
 	}
 }
 

@@ -38,7 +38,7 @@ type Handler struct {
 }
 
 // New handler.
-func New(config *Config, l log.Level) *Handler {
+func New(config *Config) *Handler {
 	conn, err := net.Dial("udp", fmt.Sprintf("%s.papertrailapp.com:%d", config.Host, config.Port))
 	if err != nil {
 		panic(err)
@@ -47,7 +47,7 @@ func New(config *Config, l log.Level) *Handler {
 	return &Handler{
 		Config: config,
 		conn:   conn,
-		Level:  l,
+		Level:  log.InfoLevel,
 	}
 }
 

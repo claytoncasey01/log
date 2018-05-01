@@ -17,7 +17,7 @@ type Handler struct {
 
 // New handler.
 func New() *Handler {
-	return &Handler{}
+	return &Handler{Level: log.InfoLevel}
 }
 
 // GetLevel returns the log level for the given Handler

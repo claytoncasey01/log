@@ -14,7 +14,7 @@ import (
 )
 
 // Default handler outputting to stderr.
-var Default = New(os.Stderr, log.InfoLevel)
+var Default = New(os.Stderr)
 
 // start time.
 var start = time.Now()
@@ -48,19 +48,19 @@ type Handler struct {
 }
 
 // New handler.
-func New(w io.Writer, l log.Level) *Handler {
+func New(w io.Writer) *Handler {
 	if f, ok := w.(*os.File); ok {
 		return &Handler{
 			Writer:  colorable.NewColorable(f),
 			Padding: 3,
-			Level:   l,
+			Level:   log.InfoLevel,
 		}
 	}
 
 	return &Handler{
 		Writer:  w,
 		Padding: 3,
-		Level:   l,
+		Level:   log.InfoLevel,
 	}
 }
 

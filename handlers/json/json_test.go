@@ -20,7 +20,7 @@ func init() {
 func Test(t *testing.T) {
 	var buf bytes.Buffer
 
-	log.SetHandler(json.New(&buf, log.InfoLevel))
+	log.SetHandler(json.New(&buf))
 	log.WithField("user", "tj").WithField("id", "123").Info("hello")
 	log.Info("world")
 	log.Error("boom")

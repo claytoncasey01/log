@@ -22,22 +22,22 @@ type Handler struct {
 
 // New handler sending logs to Kinesis. To configure producer options or pass your
 // own AWS Kinesis client use NewConfig instead.
-func New(stream string, l log.Level) *Handler {
+func New(stream string) *Handler {
 	return NewConfig(k.Config{
 		StreamName: stream,
 		Client:     kinesis.New(session.New(aws.NewConfig())),
-	}, l)
+	})
 }
 
 // NewConfig handler sending logs to Kinesis. The `config` given is passed to the batch
 // Kinesis producer, and a random value is used as the partition key for even distribution.
-func NewConfig(config k.Config, l log.Level) *Handler {
+func NewConfig(config k.Config) *Handler {
 	producer := k.New(config)
 	producer.Start()
 	return &Handler{
 		producer: producer,
 		gen:      fastuuid.MustNewGenerator(),
-		Level:    l,
+		Level:    log.InfoLevel,
 	}
 }
 

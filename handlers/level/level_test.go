@@ -14,7 +14,7 @@ func Test(t *testing.T) {
 	h := memory.New()
 
 	ctx := log.Logger{
-		Handler: level.New(h, log.ErrorLevel),
+		Handler: level.New(h),
 		Level:   log.InfoLevel,
 	}
 
