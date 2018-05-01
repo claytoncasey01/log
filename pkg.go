@@ -2,7 +2,7 @@ package log
 
 // singletons ftw?
 var Log Interface = &Logger{
-	Handler: NewDefaultHandler(),
+	Handler: &defaultHandler{Level: InfoLevel},
 }
 
 // SetHandler sets the handler. This is not thread-safe.
