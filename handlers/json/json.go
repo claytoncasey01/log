@@ -21,7 +21,7 @@ type Handler struct {
 }
 
 // New handler.
-func New(w io.Writer, l log.Level) *Handler {
+func New(w io.Writer) *Handler {
 	return &Handler{
 		Encoder: j.NewEncoder(w),
 		Level:   log.InfoLevel,
